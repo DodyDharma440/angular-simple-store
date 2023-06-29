@@ -1,4 +1,6 @@
 import { Component, OnInit } from "@angular/core";
+import { Product } from "src/app/models/product.model";
+import { CartService } from "src/app/services/cart.service";
 
 const rowHeights: Record<number, number> = {
   1: 400,
@@ -13,11 +15,11 @@ const rowHeights: Record<number, number> = {
 export class HomeComponent implements OnInit {
   dummies = [...Array(10)];
 
-  columns = 1;
+  columns = 3;
   rowHeight = rowHeights[this.columns];
   category = "";
 
-  constructor() {}
+  constructor(private cartService: CartService) {}
 
   ngOnInit(): void {}
 
@@ -28,5 +30,15 @@ export class HomeComponent implements OnInit {
 
   onUpdateCategory(value: string) {
     this.category = value;
+  }
+
+  onAddToCart(product: Product) {
+    this.cartService.addToCart({
+      id: product.id,
+      name: product.title,
+      price: product.price,
+      product: product.image,
+      quantity: 1,
+    });
   }
 }

@@ -13,6 +13,7 @@
         <app-product-box
           class="w-full"
           [fullWidth]="columns === 1"
+          (addToCart)="onAddToCart($event)"
         ></app-product-box>
       </mat-grid-tile>
     </mat-grid-list>

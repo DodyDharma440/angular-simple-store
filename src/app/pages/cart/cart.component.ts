@@ -1,5 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { Cart, CartItem } from "src/app/models/cart.model";
+import { CartService } from "src/app/services/cart.service";
 
 @Component({
   selector: "app-cart",
@@ -7,22 +8,7 @@ import { Cart, CartItem } from "src/app/models/cart.model";
 })
 export class CartComponent implements OnInit {
   carts: Cart = {
-    items: [
-      {
-        product: "https://via.placeholder.com/150",
-        name: "snickers",
-        price: 150,
-        quantity: 1,
-        id: 1,
-      },
-      {
-        product: "https://via.placeholder.com/150",
-        name: "snickers",
-        price: 150,
-        quantity: 1,
-        id: 2,
-      },
-    ],
+    items: [],
   };
   dataSource: CartItem[] = [];
   columns: Record<"label" | "key", string>[] = [
@@ -35,10 +21,13 @@ export class CartComponent implements OnInit {
   ];
   displayCols = this.columns.map((col) => col.key);
 
-  constructor() {}
+  constructor(private cartService: CartService) {}
 
   ngOnInit(): void {
-    this.dataSource = this.carts.items;
+    this.cartService.cart.subscribe((val) => {
+      this.carts = val;
+      this.dataSource = this.carts.items;
+    });
   }
 
   getTotal(items: CartItem[]): number {
@@ -49,10 +38,6 @@ export class CartComponent implements OnInit {
     return total;
   }
 
-  getQuantity(id: number): number {
-    return this.dataSource.find((item) => item.id === id)?.quantity || 0;
-  }
-
   onChangeQuantity(type: "increase" | "decrease", id: number): void {
     const index = this.dataSource.findIndex((item) => item.id === id);
     const item = this.dataSource[index];
@@ -60,6 +45,14 @@ export class CartComponent implements OnInit {
     const quantity =
       type === "increase" ? item.quantity + 1 : item.quantity - 1;
 
-    this.dataSource[index] = { ...item, quantity };
+    this.cartService.updateQuantity(quantity, id);
+  }
+
+  onClearCart() {
+    this.cartService.clearCart();
+  }
+
+  onDeleteCartItem(id: number) {
+    this.cartService.deleteCartItem(id);
   }
 }

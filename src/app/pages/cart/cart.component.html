@@ -11,6 +11,7 @@
           mat-raised-button
           color="warn"
           class="float-right"
+          (click)="onClearCart()"
         >
           Clear All
         </button>
@@ -36,7 +37,7 @@
             class="flex items-center gap-2 [&>button]:!w-10 [&>button]:!h-10 [&>button]:!p-0"
           >
             <button
-              [disabled]="getQuantity(element.id) === 1"
+              [disabled]="element.quantity === 1"
               mat-icon-button
               (click)="onChangeQuantity('decrease', element.id)"
             >
@@ -45,7 +46,7 @@
                 >remove</mat-icon
               >
             </button>
-            {{ getQuantity(element.id) }}
+            {{ element.quantity }}
             <button
               mat-icon-button
               (click)="onChangeQuantity('increase', element.id)"
@@ -67,6 +68,7 @@
           mat-mini-fab
           color="warn"
           class="float-right"
+          (click)="onDeleteCartItem(element.id)"
         >
           <mat-icon>delete</mat-icon>
         </button>
