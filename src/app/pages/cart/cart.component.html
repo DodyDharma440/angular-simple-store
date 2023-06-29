@@ -1,0 +1,112 @@
+<mat-card *ngIf="carts.items.length" class="p-4">
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z0 w-full">
+    <ng-container *ngFor="let column of columns" [matColumnDef]="column.key">
+      <th mat-header-cell *matHeaderCellDef>
+        <ng-container *ngIf="column.key !== 'action'">
+          {{ column.label }}
+        </ng-container>
+
+        <button
+          *ngIf="column.key === 'action'"
+          mat-raised-button
+          color="warn"
+          class="float-right"
+        >
+          Clear All
+        </button>
+      </th>
+      <td mat-cell *matCellDef="let element">
+        <img
+          *ngIf="column.key === 'product'"
+          src="{{ element.product }}"
+          alt="product image"
+          class="w-[100px] my-5"
+        />
+
+        <p *ngIf="column.key === 'name'" class="truncate max-w-xs !mb-0 block">
+          {{ element.name }}
+        </p>
+
+        <ng-container *ngIf="column.key === 'price'">
+          {{ element.price | currency }}
+        </ng-container>
+
+        <ng-container *ngIf="column.key === 'quantity'">
+          <div
+            class="flex items-center gap-2 [&>button]:!w-10 [&>button]:!h-10 [&>button]:!p-0"
+          >
+            <button
+              [disabled]="getQuantity(element.id) === 1"
+              mat-icon-button
+              (click)="onChangeQuantity('decrease', element.id)"
+            >
+              <mat-icon
+                class="text-sm !flex !justify-center !items-center !mx-auto"
+                >remove</mat-icon
+              >
+            </button>
+            {{ getQuantity(element.id) }}
+            <button
+              mat-icon-button
+              (click)="onChangeQuantity('increase', element.id)"
+            >
+              <mat-icon
+                class="text-sm !flex !justify-center !items-center !mx-auto"
+                >add</mat-icon
+              >
+            </button>
+          </div>
+        </ng-container>
+
+        <ng-container *ngIf="column.key === 'total'">
+          {{ element.price * element.quantity | currency }}
+        </ng-container>
+
+        <button
+          *ngIf="column.key === 'action'"
+          mat-mini-fab
+          color="warn"
+          class="float-right"
+        >
+          <mat-icon>delete</mat-icon>
+        </button>
+      </td>
+      <td mat-footer-cell *matFooterCellDef>
+        <button
+          *ngIf="column.key === 'product'"
+          mat-raised-button
+          routerLink="/home"
+        >
+          Continue shopping
+        </button>
+
+        <span *ngIf="column.key === 'total'" class="font-bold py-5 block">
+          {{ getTotal(carts.items) | currency }}
+        </span>
+
+        <button
+          *ngIf="column.key === 'action'"
+          mat-raised-button
+          color="primary"
+          class="float-right"
+        >
+          Proceed to Checkout
+        </button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayCols"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayCols"></tr>
+    <tr mat-footer-row *matFooterRowDef="displayCols"></tr>
+  </table>
+</mat-card>
+
+<mat-card *ngIf="!carts.items.length" class="p-4">
+  <p class="text-xl mb-0 font-semibold">
+    Your cart is empty.
+    <span class="text-rose-500 cursor-pointer" routerLink="/home"
+      >Start shopping</span
+    >
+    now
+  </p>
+</mat-card>

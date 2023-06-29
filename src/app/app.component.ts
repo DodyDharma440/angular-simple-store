@@ -3,8 +3,10 @@ import { Component } from "@angular/core";
 @Component({
   selector: "app-root",
   template: `
-    <app-header></app-header>
-    <router-outlet></router-outlet>
+    <div class="container max-w-7xl mx-auto">
+      <app-header></app-header>
+      <router-outlet></router-outlet>
+    </div>
   `,
   styles: [],
 })
