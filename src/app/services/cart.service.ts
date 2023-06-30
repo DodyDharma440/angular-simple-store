@@ -29,7 +29,7 @@ export class CartService {
   }
 
   getTotal(items: CartItem[]): number {
-    return items.reduce((prev, curr) => prev + curr.quantity, 0);
+    return items.reduce((prev, curr) => prev + curr.price * curr.quantity, 0);
   }
 
   clearCart() {

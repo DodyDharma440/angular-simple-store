@@ -4,12 +4,14 @@
   </mat-expansion-panel-header>
   <mat-selection-list [multiple]="false">
     <mat-list-option
-      *ngFor="let category of categories"
-      [value]="category"
-      (click)="onShowCategory(category)"
+      *ngFor="let item of categories"
+      [value]="item"
+      (click)="onShowCategory(item)"
       class="[&>span:nth-child(2)]:hidden"
     >
-      {{ category }}
+      <span [ngClass]="{ 'text-rose-500': category === item }">
+        {{ item }}
+      </span>
     </mat-list-option>
   </mat-selection-list>
 </mat-expansion-panel>
