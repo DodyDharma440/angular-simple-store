@@ -2,10 +2,10 @@
   <div [ngClass]="{ flex: fullWidth }">
     <div [ngClass]="{ 'w-[360px]': fullWidth }">
       <img
-        class="mb-1 mx-auto"
+        class="mb-1 mx-auto object-contain"
         [ngClass]="{
           'h-[200px]': !fullWidth,
-          'h-[360px] object-contain': fullWidth
+          'h-[360px]': fullWidth
         }"
         [src]="product?.image"
         loading="lazy"
